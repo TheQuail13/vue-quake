@@ -1,32 +1,63 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated class="bg-primary text-white">
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          @click="leftDrawerOpen = !leftDrawerOpen"
+          aria-label="Menu"
+          icon="menu"
+        />
+
+        <q-toolbar-title>
+          Latest Earthquakes
+        </q-toolbar-title>
+
+        <div>
+          <q-icon
+            v-if="display !== 'list'"
+            name="list"
+            size="md"
+            @click="setDisplayType('list')"
+          ></q-icon>
+          <q-icon v-else name="map" size="md" @click="setDisplayType('map')"></q-icon>
+        </div>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
+      <q-list> </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <EventList />
+    </q-page-container>
+  </q-layout>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import EventList from "./components/EventList.vue";
 
-#nav {
-  padding: 30px;
+export default {
+  name: "LayoutDefault",
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  components: {
+    EventList,
+  },
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  data() {
+    return {
+      leftDrawerOpen: false,
+      display: "list",
+    };
+  },
+
+  methods: {
+    setDisplayType(type) {
+      this.display = type;
+    },
+  },
+};
+</script>
