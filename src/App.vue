@@ -16,13 +16,22 @@
         </q-toolbar-title>
 
         <div>
-          <q-icon
-            v-if="display !== 'list'"
-            name="list"
-            size="md"
-            @click="setDisplayType('list')"
-          ></q-icon>
-          <q-icon v-else name="map" size="md" @click="setDisplayType('map')"></q-icon>
+          <transition name="fade" mode="out-in">
+            <q-icon
+              v-if="display !== 'list'"
+              name="list"
+              size="md"
+              @click="setDisplayType('list')"
+              key="list"
+            ></q-icon>
+            <q-icon
+              v-else
+              name="map"
+              size="md"
+              @click="setDisplayType('map')"
+              key="map"
+            ></q-icon>
+          </transition>
         </div>
       </q-toolbar>
     </q-header>
@@ -61,3 +70,14 @@ export default {
   },
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
