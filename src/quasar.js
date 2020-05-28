@@ -20,6 +20,9 @@ import {
   QItemSection,
   QItemLabel,
   QAvatar,
+  QInnerLoading,
+  QSpinnerBall,
+  QSelect,
   Ripple
 } from 'quasar'
 
@@ -39,7 +42,10 @@ Vue.use(Quasar, {
     QItem,
     QItemSection,
     QItemLabel,
-    QAvatar
+    QAvatar,
+    QInnerLoading,
+    QSpinnerBall,
+    QSelect
   },
   directives: {
     Ripple

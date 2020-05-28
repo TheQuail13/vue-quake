@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Latest Earthquakes
+          Vue-Quake
         </q-toolbar-title>
 
         <div>
