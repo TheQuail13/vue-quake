@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 
 Vue.use(GmapVue, {
   load: {
-    key: process.env.GOOGLE_API_KEY,
+    key: process.env.VUE_APP_GOOGLE_API_KEY,
     installComponents: true
   }
 })

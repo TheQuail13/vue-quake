@@ -1,12 +1,13 @@
 <template>
   <q-page class="flex flex-center">
-    <h4 class="q-my-md">M {{ this.dataFeedMinMagnitude }}, Previous days</h4>
     <q-select
       outlined
+      dense
+      options-dense
       v-model="sortBy"
       :options="sortOptions"
       label="Sort by"
-      class="q-mb-md q-px-md full-width"
+      class="q-my-md q-px-md full-width"
     />
     <q-list bordered separator>
       <q-item clickable v-ripple v-for="event in sortedEventList" :key="event.id">
@@ -21,10 +22,6 @@
         </q-item-section>
       </q-item>
     </q-list>
-
-    <q-inner-loading :showing="isLoading">
-      <q-spinner-ball size="50px" color="primary" />
-    </q-inner-loading>
   </q-page>
 </template>
 
@@ -32,12 +29,16 @@
 import { date } from "quasar";
 
 export default {
+  props: {
+    eventData: {
+      type: Array,
+      required: true,
+      default: () => [],
+    },
+  },
+
   data() {
     return {
-      isLoading: false,
-      quakeList: null,
-      dataFeedMinMagnitude: 2.5,
-      dataFeedTimeComponent: "day",
       sortBy: "Date Descending",
       sortOptions: [
         "Date Ascending",
@@ -52,17 +53,7 @@ export default {
     formatDate(milliseconds) {
       return date.formatDate(milliseconds, "MM-DD-YYYY HH:mm:ss");
     },
-    getQuakeDataFeed() {
-      this.isLoading = true;
-      this.$http
-        .get(
-          `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${this.dataFeedMinMagnitude}_${this.dataFeedTimeComponent}.geojson`
-        )
-        .then((response) => {
-          this.quakeList = response.data.features;
-          this.isLoading = false;
-        });
-    },
+
     getMagnitudeColor(mag) {
       if (mag < 4) {
         return "positive";
@@ -76,8 +67,8 @@ export default {
 
   computed: {
     sortedEventList() {
-      if (this.quakeList && this.quakeList.length > 0) {
-        let arrToSort = JSON.parse(JSON.stringify(this.quakeList));
+      if (this.eventData && this.eventData.length > 0) {
+        let arrToSort = JSON.parse(JSON.stringify(this.eventData));
         switch (this.sortBy) {
           case "Date Ascending":
             return arrToSort.sort((a, b) => a.properties.time - b.properties.time);
@@ -91,10 +82,6 @@ export default {
       }
       return [];
     },
-  },
-
-  mounted() {
-    this.getQuakeDataFeed();
   },
 };
 </script>

@@ -41,25 +41,36 @@
     </q-drawer>
 
     <q-page-container>
-      <EventList />
+      <EventList v-if="display === 'list'" :event-data="quakeList" />
+      <QuakeMap v-else :event-data="quakeList" />
     </q-page-container>
+
+    <q-inner-loading :showing="isLoading">
+      <q-spinner-ball size="50px" color="primary" />
+    </q-inner-loading>
   </q-layout>
 </template>
 
 <script>
 import EventList from "./components/EventList.vue";
+import QuakeMap from "./components/QuakeMap.vue";
 
 export default {
   name: "LayoutDefault",
 
   components: {
     EventList,
+    QuakeMap,
   },
 
   data() {
     return {
       leftDrawerOpen: false,
       display: "list",
+      isLoading: false,
+      quakeList: [],
+      dataFeedMinMagnitude: 2.5,
+      dataFeedTimeComponent: "day",
     };
   },
 
@@ -67,6 +78,21 @@ export default {
     setDisplayType(type) {
       this.display = type;
     },
+    getQuakeDataFeed() {
+      this.isLoading = true;
+      this.$http
+        .get(
+          `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${this.dataFeedMinMagnitude}_${this.dataFeedTimeComponent}.geojson`
+        )
+        .then((response) => {
+          this.quakeList = response.data.features;
+          this.isLoading = false;
+        });
+    },
+  },
+
+  mounted() {
+    this.getQuakeDataFeed();
   },
 };
 </script>
