@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn
@@ -36,13 +36,19 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
-      <q-list> </q-list>
+    <q-drawer
+      show-if-above
+      elevated
+      v-model="leftDrawerOpen"
+      bordered
+      content-class="bg-grey-2"
+    >
+      <Sidebar />
     </q-drawer>
 
     <q-page-container>
-      <EventList v-if="display === 'list'" :event-data="quakeList" />
-      <QuakeMap v-else :event-data="quakeList" />
+      <EventList v-if="display === 'list'" :event-data="eventList" />
+      <QuakeMap v-else :event-data="eventList" />
     </q-page-container>
 
     <q-inner-loading :showing="isLoading">
@@ -52,6 +58,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+import Sidebar from "./components/Sidebar.vue";
 import EventList from "./components/EventList.vue";
 import QuakeMap from "./components/QuakeMap.vue";
 
@@ -59,6 +67,7 @@ export default {
   name: "LayoutDefault",
 
   components: {
+    Sidebar,
     EventList,
     QuakeMap,
   },
@@ -67,28 +76,29 @@ export default {
     return {
       leftDrawerOpen: false,
       display: "list",
-      isLoading: false,
-      quakeList: [],
-      dataFeedMinMagnitude: 2.5,
-      dataFeedTimeComponent: "day",
     };
   },
 
   methods: {
+    ...mapActions(["getQuakeDataFeed"]),
     setDisplayType(type) {
       this.display = type;
     },
-    getQuakeDataFeed() {
-      this.isLoading = true;
-      this.$http
-        .get(
-          `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${this.dataFeedMinMagnitude}_${this.dataFeedTimeComponent}.geojson`
-        )
-        .then((response) => {
-          this.quakeList = response.data.features;
-          this.isLoading = false;
-        });
-    },
+    // getQuakeDataFeed() {
+    //   this.isLoading = true;
+    //   this.$http
+    //     .get(
+    //       `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${this.dataFeedMinMagnitude}_${this.dataFeedTimeComponent}.geojson`
+    //     )
+    //     .then((response) => {
+    //       this.quakeList = response.data.features;
+    //       this.isLoading = false;
+    //     });
+    // },
+  },
+
+  computed: {
+    ...mapState(["isLoading", "eventList"]),
   },
 
   mounted() {
