@@ -11,7 +11,7 @@
           label="Magnitude"
           :options="magOptions"
           class="q-pl-md q-pr-sm"
-          v-model="selectedMinMag"
+          v-model="selectedMinimumMag"
         />
       </div>
       <div class="col">
@@ -28,25 +28,25 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      //   selectedMinMag: "4.5+",
-      magOptions: ["All", "2.5+", "4.5+", "Significant"],
-      //   selectedTimeFrame: "Day",
-      timeFrames: ["Day", "Week", "Month"],
-    };
+  methods: {
+    ...mapActions(["getQuakeDataFeed"]),
+    notifySuccess() {
+      this.$q.notify({
+        message: "Results updated",
+        position: "top",
+        timeout: 1000,
+        type: "positive",
+      });
+    },
   },
-
-  methods: {},
-
   computed: {
-    ...mapState(["selectedTimeFrame"]),
-    selectedMinMag: {
+    ...mapState(["isLoading", "selectedTimeFrame", "magOptions", "timeFrames"]),
+    selectedMinimumMag: {
       get() {
-        return this.$store.state.selectedMinMag;
+        return this.$store.state.selectedMinimumMag;
       },
       set(value) {
         this.$store.commit("setMinimumMagnitude", value);
@@ -61,7 +61,23 @@ export default {
       },
     },
   },
+
+  watch: {
+    selectedMinimumMag(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.getQuakeDataFeed();
+      }
+    },
+    selectedTimeFrame(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.getQuakeDataFeed();
+      }
+    },
+    isLoading(newVal, oldVal) {
+      if (!this.isLoading && oldVal) {
+        this.notifySuccess();
+      }
+    },
+  },
 };
 </script>
-
-<style lang="scss" scoped></style>

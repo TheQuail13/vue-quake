@@ -8,10 +8,10 @@ export default new Vuex.Store({
   state: {
     isLoading: false,
     eventList: [],
-    dataFeedMinMagnitude: 2.5,
-    dataFeedTimeComponent: "day",
-    selectedMinMag: "4.5+",
+    selectedMinimumMag: "4.5",
     selectedTimeFrame: "Day",
+    magOptions: ["All", "2.5", "4.5", "Significant"],
+    timeFrames: ["Day", "Week", "Month"],
   },
   mutations: {
     setIsLoading(state, payload) {
@@ -21,7 +21,7 @@ export default new Vuex.Store({
       state.eventList = payload
     },
     setMinimumMagnitude(state, payload) {
-      state.selectedMinMag = payload;
+      state.selectedMinimumMag = payload;
     },
     setSelectedTimeFrame(state, payload) {
       state.selectedTimeFrame = payload;
@@ -32,7 +32,7 @@ export default new Vuex.Store({
       commit('setIsLoading', true)
       axios
         .get(
-          `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${state.dataFeedMinMagnitude}_${state.dataFeedTimeComponent}.geojson`
+          `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${state.selectedMinimumMag.toLowerCase()}_${state.selectedTimeFrame.toLowerCase()}.geojson`
         )
         .then((response) => {
           commit('setEventList', response.data.features)

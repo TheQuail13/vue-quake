@@ -23,7 +23,8 @@ import {
   QInnerLoading,
   QSpinnerBall,
   QSelect,
-  Ripple
+  Ripple,
+  Notify
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -48,8 +49,9 @@ Vue.use(Quasar, {
     QSelect
   },
   directives: {
-    Ripple
+    Ripple,
   },
   plugins: {
+    Notify
   }
  })
