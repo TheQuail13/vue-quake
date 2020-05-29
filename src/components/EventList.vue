@@ -55,8 +55,10 @@ export default {
     },
 
     getMagnitudeColor(mag) {
-      if (mag < 4) {
+      if (mag < 3) {
         return "positive";
+      } else if (mag < 4) {
+        return "primary";
       } else if (mag < 5.5) {
         return "warning";
       } else {

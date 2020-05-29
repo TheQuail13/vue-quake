@@ -58,8 +58,10 @@ export default {
       return date.formatDate(milliseconds, "MM-DD-YYYY HH:mm:ss");
     },
     getMagnitudeColor(mag) {
-      if (mag < 4) {
+      if (mag < 3) {
         return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+      } else if (mag < 4) {
+        return "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
       } else if (mag < 5.5) {
         return "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
       } else {
