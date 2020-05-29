@@ -1,13 +1,37 @@
 <template>
   <q-page class="flex flex-center">
+    <div class="row full-width q-pt-md">
+      <div class="col">
+        <q-select
+          outlined
+          dense
+          options-dense
+          label="Magnitude"
+          v-model="minMag"
+          :options="magOptions"
+          class="q-pl-md q-pr-sm"
+        />
+      </div>
+      <div class="col">
+        <q-select
+          outlined
+          dense
+          options-dense
+          label="Time Frame"
+          v-model="selectedTimeFrame"
+          :options="timeFrames"
+          class="q-pl-sm q-pr-md"
+        />
+      </div>
+    </div>
     <q-select
       outlined
       dense
       options-dense
-      v-model="sortBy"
-      :options="sortOptions"
       label="Sort by"
       class="q-my-md q-px-md full-width"
+      v-model="sortBy"
+      :options="sortOptions"
     />
     <q-list bordered separator>
       <q-item clickable v-ripple v-for="event in sortedEventList" :key="event.id">
@@ -39,6 +63,10 @@ export default {
 
   data() {
     return {
+      minMag: "4.5+",
+      magOptions: ["All", "2.5+", "4.5+", "Significant"],
+      selectedTimeFrame: "Day",
+      timeFrames: ["Day", "Week", "Month"],
       sortBy: "Date Descending",
       sortOptions: [
         "Date Ascending",
