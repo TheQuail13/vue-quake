@@ -78,7 +78,8 @@ export default {
       <div class="q-mb-xs"><small>${this.formatDate(
         marker.properties.time
       )} UTC</small></div>
-      <div><strong>Mag: </strong>${marker.properties.mag}</div> 
+      <div><strong>Mag: </strong>${marker.properties.mag}</div>
+      <div><strong>Depth: </strong>${marker.geometry.coordinates[2]} km</div> 
       <div><strong>Lat: </strong>${marker.geometry.coordinates[1]}</div>
       <div><strong>Long: </strong>${marker.geometry.coordinates[0]}</div>
       `;
