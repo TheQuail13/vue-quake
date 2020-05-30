@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex flex-center">
-    <GmapMap :center="{ lat: 34, lng: -118 }" :zoom="2" style="width: 100%; height: 95vh">
+  <q-page class="">
+    <GmapMap :center="{ lat: 34, lng: -118 }" :zoom="2" :style="mapStyle">
       <gmap-info-window
         :options="infoOptions"
         :position="infoWindowPos"
@@ -79,7 +79,7 @@ export default {
         marker.properties.time
       )} UTC</small></div>
       <div><strong>Mag: </strong>${marker.properties.mag}</div>
-      <div><strong>Depth: </strong>${marker.geometry.coordinates[2]} km</div> 
+      <div><strong>Depth: </strong>${marker.geometry.coordinates[2]} km</div>
       <div><strong>Lat: </strong>${marker.geometry.coordinates[1]}</div>
       <div><strong>Long: </strong>${marker.geometry.coordinates[0]}</div>
       `;
@@ -95,7 +95,25 @@ export default {
       }
     },
   },
+
+  computed: {
+    mapStyle() {
+      if (window) {
+        return {
+          width: "100%",
+          height: `${window.innerHeight - 50}px`,
+        };
+      }
+
+      return {
+        width: "100%",
+        height: "89vh",
+      };
+    },
+  },
+
+  mounted() {
+    console.log(window.innerHeight - 50);
+  },
 };
 </script>
-
-<style lang="scss" scoped></style>

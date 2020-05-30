@@ -37,7 +37,7 @@ export default {
       this.$q.notify({
         message: "Results updated",
         position: "top",
-        timeout: 1000,
+        timeout: 1200,
         type: "positive",
       });
     },
