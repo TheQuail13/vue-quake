@@ -12,6 +12,13 @@ export default new Vuex.Store({
     selectedTimeFrame: "Day",
     magOptions: ["All", "2.5", "4.5", "Significant"],
     timeFrames: ["Day", "Week", "Month"],
+    sortBy: "Date Descending",
+    sortOptions: [
+      "Date Ascending",
+      "Date Descending",
+      "Magnitude Ascending",
+      "Magnitude Descending",
+    ],
   },
   mutations: {
     setIsLoading(state, payload) {
@@ -25,6 +32,9 @@ export default new Vuex.Store({
     },
     setSelectedTimeFrame(state, payload) {
       state.selectedTimeFrame = payload;
+    },
+    setSoryBy(state, payload) {
+      state.sortBy = payload;
     }
   },
   actions: {

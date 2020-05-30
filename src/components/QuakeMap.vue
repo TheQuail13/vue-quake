@@ -73,7 +73,9 @@ export default {
         return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
       } else if (mag < 4) {
         return "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
-      } else if (mag < 5.5) {
+      } else if (mag < 5) {
+        return "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+      } else if (mag < 6) {
         return "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
       } else {
         return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";

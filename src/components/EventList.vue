@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { date } from "quasar";
 
 export default {
@@ -44,15 +45,7 @@ export default {
   },
 
   data() {
-    return {
-      sortBy: "Date Descending",
-      sortOptions: [
-        "Date Ascending",
-        "Date Descending",
-        "Magnitude Ascending",
-        "Magnitude Descending",
-      ],
-    };
+    return {};
   },
 
   methods: {
@@ -74,6 +67,15 @@ export default {
   },
 
   computed: {
+    ...mapState(["sortOptions"]),
+    sortBy: {
+      get() {
+        return this.$store.state.sortBy;
+      },
+      set(value) {
+        this.$store.commit("setSoryBy", value);
+      },
+    },
     sortedEventList() {
       if (this.eventData && this.eventData.length > 0) {
         let arrToSort = JSON.parse(JSON.stringify(this.eventData));
