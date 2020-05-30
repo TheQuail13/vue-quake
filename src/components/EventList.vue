@@ -52,16 +52,17 @@ export default {
     formatDate(milliseconds) {
       return date.formatDate(milliseconds, "MM-DD-YYYY HH:mm:ss");
     },
-
     getMagnitudeColor(mag) {
       if (mag < 3) {
-        return "positive";
+        return "light-blue";
       } else if (mag < 4) {
-        return "primary";
-      } else if (mag < 5.5) {
-        return "warning";
+        return "green";
+      } else if (mag < 5) {
+        return "yellow-8";
+      } else if (mag < 6) {
+        return "orange-8";
       } else {
-        return "negative";
+        return "red-8";
       }
     },
   },
