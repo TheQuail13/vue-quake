@@ -1,6 +1,12 @@
 <template>
   <q-page class="">
-    <GmapMap :center="{ lat: 34, lng: -118 }" :zoom="2" :style="mapStyle">
+    <GmapMap
+      ref="quakeMap"
+      :center="{ lat: 34, lng: -118 }"
+      :zoom="2"
+      :style="mapStyle"
+      :options="mapOptions"
+    >
       <gmap-info-window
         :options="infoOptions"
         :position="infoWindowPos"
@@ -19,7 +25,7 @@
         }"
         :icon="getMagnitudeColor(event.properties.mag)"
         @click="toggleInfoWindow(event, idx)"
-      ></gmap-marker>
+      />
     </GmapMap>
   </q-page>
 </template>
@@ -38,6 +44,11 @@ export default {
 
   data() {
     return {
+      mapOptions: {
+        mapTypeControl: false,
+        fullscreenControl: false,
+        streetViewControl: false,
+      },
       infoWinOpen: false,
       infoContent: "",
       infoWindowPos: {
@@ -94,6 +105,16 @@ export default {
         this.currentMidx = idx;
       }
     },
+    getCircle(magnitude) {
+      return {
+        path: "SymbolPath.CIRCLE",
+        fillColor: "red",
+        fillOpacity: 0.2,
+        scale: Math.pow(2, magnitude) / 2,
+        strokeColor: "white",
+        strokeWeight: 0.5,
+      };
+    },
   },
 
   computed: {
@@ -112,8 +133,6 @@ export default {
     },
   },
 
-  mounted() {
-    console.log(window.innerHeight - 50);
-  },
+  mounted() {},
 };
 </script>
