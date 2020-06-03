@@ -36,7 +36,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
+    <!-- <q-drawer
       show-if-above
       elevated
       v-model="leftDrawerOpen"
@@ -44,7 +44,11 @@
       content-class="bg-grey-2"
     >
       <Sidebar />
-    </q-drawer>
+    </q-drawer> -->
+
+    <q-dialog v-model="leftDrawerOpen">
+      <Sidebar style="width: 700px; max-width: 80vw;" />
+    </q-dialog>
 
     <q-page-container>
       <EventList v-if="display === 'list'" :event-data="eventList" />

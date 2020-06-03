@@ -24,7 +24,12 @@ import {
   QSpinnerBall,
   QSelect,
   Ripple,
-  Notify
+  Notify,
+  QCard,
+  QCardSection,
+  QDialog,
+  QSpace,
+  ClosePopup
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -46,10 +51,15 @@ Vue.use(Quasar, {
     QAvatar,
     QInnerLoading,
     QSpinnerBall,
-    QSelect
+    QSelect,
+    QCard,
+    QCardSection,
+    QDialog,
+    QSpace
   },
   directives: {
     Ripple,
+    ClosePopup
   },
   plugins: {
     Notify
