@@ -21,7 +21,7 @@ import {
   QItemLabel,
   QAvatar,
   QInnerLoading,
-  QSpinnerBall,
+  QSpinnerFacebook,
   QSelect,
   Ripple,
   Notify,
@@ -29,6 +29,7 @@ import {
   QCardSection,
   QDialog,
   QSpace,
+  QCardActions,
   ClosePopup
 } from 'quasar'
 
@@ -50,12 +51,13 @@ Vue.use(Quasar, {
     QItemLabel,
     QAvatar,
     QInnerLoading,
-    QSpinnerBall,
+    QSpinnerFacebook,
     QSelect,
     QCard,
     QCardSection,
     QDialog,
-    QSpace
+    QSpace,
+    QCardActions
   },
   directives: {
     Ripple,

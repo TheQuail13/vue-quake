@@ -8,7 +8,7 @@
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
-          icon="menu"
+          icon="settings"
         />
 
         <q-toolbar-title>
@@ -36,34 +36,20 @@
       </q-toolbar>
     </q-header>
 
-    <!-- <q-drawer
-      show-if-above
-      elevated
-      v-model="leftDrawerOpen"
-      bordered
-      content-class="bg-grey-2"
-    >
-      <Sidebar />
-    </q-drawer> -->
-
     <q-dialog v-model="leftDrawerOpen">
-      <Sidebar style="width: 700px; max-width: 80vw;" />
+      <Settings style="width: 700px; max-width: 80vw;" />
     </q-dialog>
 
     <q-page-container>
       <EventList v-if="display === 'list'" :event-data="eventList" />
       <QuakeMap v-else :event-data="eventList" />
     </q-page-container>
-
-    <q-inner-loading :showing="isLoading">
-      <q-spinner-ball size="50px" color="primary" />
-    </q-inner-loading>
   </q-layout>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
-import Sidebar from "./components/Sidebar.vue";
+import Settings from "./components/Settings.vue";
 import EventList from "./components/EventList.vue";
 import QuakeMap from "./components/QuakeMap.vue";
 
@@ -71,7 +57,7 @@ export default {
   name: "LayoutDefault",
 
   components: {
-    Sidebar,
+    Settings,
     EventList,
     QuakeMap,
   },
