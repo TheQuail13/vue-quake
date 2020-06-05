@@ -100,7 +100,7 @@ export default {
     },
     shakeMap: {
       handler(newVal) {
-        if (this.$refs) {
+        if (this.$refs.eventMap) {
           if (newVal) {
             this.$refs.eventMap.$mapPromise.then((map) => {
               map.setCenter({
