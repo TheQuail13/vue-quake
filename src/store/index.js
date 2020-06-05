@@ -8,6 +8,9 @@ export default new Vuex.Store({
   state: {
     isLoading: false,
     eventList: [],
+    eventDetails: null,
+    shakeMap: null,
+    error: null,
     selectedMinimumMag: "4.5",
     selectedTimeFrame: "Day",
     magOptions: ["All", "2.5", "4.5", "Significant"],
@@ -26,6 +29,15 @@ export default new Vuex.Store({
     },
     setEventList(state, payload) {
       state.eventList = payload
+    },
+    setEventDetails(state, payload) {
+      state.eventDetails = payload
+    },
+    setShakeMap(state, payload) {
+      state.shakeMap = payload
+    },
+    setError(state, payload) {
+      state.error = payload
     },
     setMinimumMagnitude(state, payload) {
       state.selectedMinimumMag = payload;
@@ -47,7 +59,37 @@ export default new Vuex.Store({
         .then((response) => {
           commit('setEventList', response.data.features)
           commit('setIsLoading', false)
+        })
+        .catch(err => { 
+          commit('setError', err)
         });
     },
+    getEventDetailsById({ commit, dispatch }, id) {
+      commit('setIsLoading', true)
+      axios
+        .get(
+          `https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/${id}.geojson`
+        )
+        .then((response) => {
+          commit('setEventDetails', response.data)
+          dispatch('getShakeMap', { id: id, updateTime: response.data.properties.products.shakemap[0].updateTime })
+        })
+        .catch(err => { 
+          commit('setError', err)
+        });
+    },
+    getShakeMap({ commit }, event) {
+      axios
+        .get(
+          `https://earthquake.usgs.gov/archive/product/shakemap/${event.id}/ci/${event.updateTime}/download/cont_mi.json`
+        )
+        .then((response) => {
+          commit('setShakeMap', response.data)
+          commit('setIsLoading', false)
+        })
+        .catch(err => { 
+          commit('setError', err)
+        });
+    }
   },
 });

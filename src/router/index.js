@@ -14,6 +14,12 @@ Vue.use(VueRouter)
     path: '/map',
     name: 'Map',
     component: () => import(/* webpackChunkName: "map" */ '../components/QuakeMap.vue')
+    },
+    {
+    path: '/details',
+    name: 'Details',
+    props: true,
+    component: () => import(/* webpackChunkName: "details" */ '../components/Details.vue')
   }
 ]
 

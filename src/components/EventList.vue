@@ -11,7 +11,13 @@
         :options="sortOptions"
       />
       <q-list bordered separator>
-        <q-item clickable v-ripple v-for="event in sortedEventList" :key="event.id">
+        <q-item
+          clickable
+          v-ripple
+          v-for="event in sortedEventList"
+          :key="event.id"
+          @click.prevent="routeTo(event.id)"
+        >
           <q-item-section avatar>
             <q-avatar :color="getMagnitudeColor(event.properties.mag)" text-color="white">
               {{ event.properties.mag ? event.properties.mag.toFixed(1) : "N/A" }}
@@ -52,6 +58,9 @@ export default {
       } else {
         return "red-8";
       }
+    },
+    routeTo(id) {
+      this.$router.push({ path: "details", query: { eventId: id } });
     },
   },
 
