@@ -13,8 +13,8 @@
 
     <GmapMap
       ref="eventMap"
-      :center="{ lat: 34, lng: -118 }"
-      :zoom="2"
+      :center="{ lat: 0, lng: 0 }"
+      :zoom="9"
       style="height: 300px; width: 100%;"
       :options="mapOptions"
     >
@@ -82,17 +82,21 @@ export default {
       },
       immediate: true,
     },
-  },
-
-  mounted() {
-    console.log(this.$refs);
-    // this.$refs.eventMap.$mapPromise.then((map) => {
-    //   map.panTo({ lat: this.shakeMap.bbox[1], lng: this.shakeMap.bbox[0] });
-    //   map.setCenter({
-    //     lat: this.shakeMap.metadata.latitude,
-    //     lng: this.shakeMap.metadata.longitude,
-    //   });
-    // });
+    shakeMap: {
+      handler(newVal) {
+        if (this.$refs) {
+          if (newVal) {
+            this.$refs.eventMap.$mapPromise.then((map) => {
+              map.setCenter({
+                lat: this.shakeMap.metadata.latitude,
+                lng: this.shakeMap.metadata.longitude,
+              });
+            });
+          }
+        }
+      },
+      immediate: true,
+    },
   },
 };
 </script>
