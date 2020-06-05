@@ -1,6 +1,6 @@
 <template>
   <q-page class="">
-    <div v-if="eventData.length > 0" key="EventsFound">
+    <div v-if="eventList.length > 0" key="EventsFound">
       <q-select
         outlined
         dense
@@ -36,18 +36,6 @@ import { mapState } from "vuex";
 import { date } from "quasar";
 
 export default {
-  props: {
-    eventData: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
-  },
-
-  data() {
-    return {};
-  },
-
   methods: {
     formatDate(milliseconds) {
       return date.formatDate(milliseconds, "MM-DD-YYYY HH:mm:ss");
@@ -68,7 +56,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["sortOptions"]),
+    ...mapState(["sortOptions", "eventList"]),
     sortBy: {
       get() {
         return this.$store.state.sortBy;
@@ -78,8 +66,8 @@ export default {
       },
     },
     sortedEventList() {
-      if (this.eventData && this.eventData.length > 0) {
-        let arrToSort = JSON.parse(JSON.stringify(this.eventData));
+      if (this.eventList && this.eventList.length > 0) {
+        let arrToSort = JSON.parse(JSON.stringify(this.eventList));
         switch (this.sortBy) {
           case "Date Ascending":
             return arrToSort.sort((a, b) => a.properties.time - b.properties.time);

@@ -21,14 +21,14 @@
               v-if="display !== 'list'"
               name="list"
               size="md"
-              @click="setDisplayType('list')"
+              @click="routeTo('list')"
               key="list"
             ></q-icon>
             <q-icon
               v-else
               name="map"
               size="md"
-              @click="setDisplayType('map')"
+              @click="routeTo('map')"
               key="map"
             ></q-icon>
           </transition>
@@ -41,8 +41,7 @@
     </q-dialog>
 
     <q-page-container>
-      <EventList v-if="display === 'list'" :event-data="eventList" />
-      <QuakeMap v-else :event-data="eventList" />
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
@@ -50,16 +49,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Settings from "./components/Settings.vue";
-import EventList from "./components/EventList.vue";
-import QuakeMap from "./components/QuakeMap.vue";
 
 export default {
   name: "LayoutDefault",
 
   components: {
     Settings,
-    EventList,
-    QuakeMap,
   },
 
   data() {
@@ -71,20 +66,14 @@ export default {
 
   methods: {
     ...mapActions(["getQuakeDataFeed"]),
-    setDisplayType(type) {
+    routeTo(type) {
       this.display = type;
+      if (type === "list") {
+        this.$router.push({ name: "List" });
+      } else {
+        this.$router.push({ name: "Map" });
+      }
     },
-    // getQuakeDataFeed() {
-    //   this.isLoading = true;
-    //   this.$http
-    //     .get(
-    //       `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${this.dataFeedMinMagnitude}_${this.dataFeedTimeComponent}.geojson`
-    //     )
-    //     .then((response) => {
-    //       this.quakeList = response.data.features;
-    //       this.isLoading = false;
-    //     });
-    // },
   },
 
   computed: {

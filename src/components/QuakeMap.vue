@@ -16,7 +16,7 @@
         <div v-html="infoContent"></div>
       </gmap-info-window>
       <gmap-marker
-        v-for="(event, idx) in eventData"
+        v-for="(event, idx) in eventList"
         :key="event.id"
         clickable
         :position="{
@@ -31,17 +31,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { date } from "quasar";
 
 export default {
-  props: {
-    eventData: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
-  },
-
   data() {
     return {
       mapOptions: {
@@ -120,6 +113,7 @@ export default {
   },
 
   computed: {
+    ...mapState(["eventList"]),
     mapStyle() {
       if (window) {
         return {
