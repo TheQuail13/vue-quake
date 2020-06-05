@@ -13,12 +13,12 @@
 
     <GmapMap
       ref="eventMap"
-      style="height: 300px; width: 100%;"
+      style="height: 500px; width: 100%;"
       :center="{
         lat: eventDetails.geometry.coordinates[1],
         lng: eventDetails.geometry.coordinates[0],
       }"
-      :zoom="9"
+      :zoom="8"
       :options="mapOptions"
       map-type-id="terrain"
     >
@@ -29,12 +29,18 @@
         }"
       ></gmap-marker>
       <div v-if="shakeMap">
-        <gmap-polyline
-          v-for="(feat, index) in shakeMap.features"
-          :key="index"
-          :path="getPolyLinePath(feat.geometry)"
-          :options="getPolyLineOptions(feat.properties)"
-        ></gmap-polyline>
+        <div
+          v-show="toggleShapeLines"
+          v-for="(feat, outerIdx) in shakeMap.features"
+          :key="outerIdx"
+        >
+          <gmap-polyline
+            v-for="(geo, innerIdx) in feat.geometry.coordinates"
+            :key="innerIdx"
+            :path="getPolyLinePath(geo)"
+            :options="getPolyLineOptions(feat.properties)"
+          ></gmap-polyline>
+        </div>
       </div>
     </GmapMap>
   </div>
@@ -50,6 +56,7 @@ export default {
       mapOptions: {
         streetViewControl: false,
       },
+      toggleShapeLines: true,
     };
   },
 
@@ -57,8 +64,8 @@ export default {
     formatDate(milliseconds) {
       return date.formatDate(milliseconds, "MM-DD-YYYY HH:mm:ss");
     },
-    getPolyLinePath(geometry) {
-      return geometry.coordinates[0].map((coords) => ({
+    getPolyLinePath(coords) {
+      return coords.map((coords) => ({
         lat: coords[1],
         lng: coords[0],
       }));
