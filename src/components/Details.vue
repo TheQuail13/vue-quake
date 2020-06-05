@@ -13,11 +13,21 @@
 
     <GmapMap
       ref="eventMap"
-      :center="{ lat: 0, lng: 0 }"
-      :zoom="9"
       style="height: 300px; width: 100%;"
+      :center="{
+        lat: eventDetails.geometry.coordinates[1],
+        lng: eventDetails.geometry.coordinates[0],
+      }"
+      :zoom="9"
       :options="mapOptions"
+      map-type-id="terrain"
     >
+      <gmap-marker
+        :position="{
+          lat: eventDetails.geometry.coordinates[1],
+          lng: eventDetails.geometry.coordinates[0],
+        }"
+      ></gmap-marker>
       <div v-if="shakeMap">
         <gmap-polyline
           v-for="(feat, index) in shakeMap.features"
@@ -38,7 +48,6 @@ export default {
   data() {
     return {
       mapOptions: {
-        mapTypeControl: false,
         streetViewControl: false,
       },
     };

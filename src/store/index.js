@@ -72,7 +72,11 @@ export default new Vuex.Store({
         )
         .then((response) => {
           commit('setEventDetails', response.data)
-          dispatch('getShakeMap', { id: id, updateTime: response.data.properties.products.shakemap[0].updateTime })
+          if (response.data.properties.products.shakemap && response.data.properties.products.shakemap.length > 0) {
+            dispatch('getShakeMap', { id: id, updateTime: response.data.properties.products.shakemap[0].updateTime })
+          } else {
+            commit('setIsLoading', false)
+          }
         })
         .catch(err => { 
           commit('setError', err)
