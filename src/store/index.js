@@ -74,7 +74,7 @@ export default new Vuex.Store({
         .then((response) => {
           commit('setEventDetails', response.data)
           if (response.data.properties.products.shakemap && response.data.properties.products.shakemap.length > 0) {
-            dispatch('getShakeMap', { id: id, updateTime: response.data.properties.products.shakemap[0].updateTime })
+            dispatch('getShakeMap', response.data.properties.products.shakemap[0])
           } else {
             commit('setIsLoading', false)
           }
@@ -87,7 +87,7 @@ export default new Vuex.Store({
     getShakeMap({ commit }, event) {
       axios
         .get(
-          `https://earthquake.usgs.gov/archive/product/shakemap/${event.id}/ci/${event.updateTime}/download/cont_mi.json`
+          `https://earthquake.usgs.gov/archive/product/shakemap/${event.code}/${event.source}/${event.updateTime}/download/cont_mi.json`
         )
         .then((response) => {
           commit('setShakeMap', response.data)

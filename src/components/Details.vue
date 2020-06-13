@@ -20,7 +20,6 @@
       }"
       :zoom="8"
       :options="mapOptions"
-      map-type-id="terrain"
     >
       <gmap-marker
         :position="{
