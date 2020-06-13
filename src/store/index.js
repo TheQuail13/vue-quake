@@ -62,6 +62,7 @@ export default new Vuex.Store({
         })
         .catch(err => { 
           commit('setError', err)
+          commit('setIsLoading', false)
         });
     },
     getEventDetailsById({ commit, dispatch }, id) {
@@ -80,6 +81,7 @@ export default new Vuex.Store({
         })
         .catch(err => { 
           commit('setError', err)
+          commit('setIsLoading', false)
         });
     },
     getShakeMap({ commit }, event) {
@@ -93,6 +95,7 @@ export default new Vuex.Store({
         })
         .catch(err => { 
           commit('setError', err)
+          commit('setIsLoading', false)
         });
     }
   },

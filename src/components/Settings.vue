@@ -29,7 +29,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="Update" @click.prevent="getQuakeDataFeed" />
+        <q-btn color="primary" label="Update" @click.prevent="getQuakes" />
         <q-btn color="red-8" label="Close" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -46,15 +46,25 @@ import { mapState, mapActions } from "vuex";
 export default {
   methods: {
     ...mapActions(["getQuakeDataFeed"]),
-    notifySuccess() {
+    getQuakes() {
+      this.getQuakeDataFeed()
+        .then(() => {
+          this.notify("positive");
+        })
+        .catch(() => {
+          this.notify("negative");
+        });
+    },
+    notify(type) {
       this.$q.notify({
         message: "Results updated",
         position: "top",
         timeout: 1200,
-        type: "positive",
+        type: type,
       });
     },
   },
+
   computed: {
     ...mapState(["isLoading", "selectedTimeFrame", "magOptions", "timeFrames"]),
     selectedMinimumMag: {
