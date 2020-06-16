@@ -1,7 +1,5 @@
 name: Deploy to Firebase
 
-runs-on: ubuntu-latest
-
 on:
   push:
     branches: [master]
