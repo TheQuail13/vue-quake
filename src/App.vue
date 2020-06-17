@@ -2,25 +2,27 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-btn
-          v-if="$route.name !== 'Details'"
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-          icon="settings"
-          key="settings"
-        />
-        <q-btn
-          v-else
-          flat
-          dense
-          round
-          @click="routeTo('list')"
-          icon="keyboard_backspace"
-          key="back"
-        />
+        <transition name="fade" mode="out-in">
+          <q-btn
+            v-if="$route.name !== 'Details'"
+            flat
+            dense
+            round
+            @click="leftDrawerOpen = !leftDrawerOpen"
+            aria-label="Menu"
+            icon="settings"
+            key="settings"
+          />
+          <q-btn
+            v-else
+            flat
+            dense
+            round
+            @click="routeTo('list')"
+            icon="keyboard_backspace"
+            key="back"
+          />
+        </transition>
 
         <q-toolbar-title>
           Vue-Quake
