@@ -3,12 +3,23 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn
+          v-if="$route.name !== 'Details'"
           flat
           dense
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
           icon="settings"
+          key="settings"
+        />
+        <q-btn
+          v-else
+          flat
+          dense
+          round
+          @click="routeTo('list')"
+          icon="keyboard_backspace"
+          key="back"
         />
 
         <q-toolbar-title>
@@ -18,7 +29,7 @@
         <div>
           <transition name="fade" mode="out-in">
             <q-icon
-              v-if="display !== 'list'"
+              v-if="display !== 'list' && display !== 'detail'"
               name="list"
               size="md"
               @click="routeTo('list')"
@@ -60,14 +71,13 @@ export default {
   data() {
     return {
       leftDrawerOpen: false,
-      display: "list",
     };
   },
 
   methods: {
     ...mapActions(["getQuakeDataFeed"]),
     routeTo(type) {
-      this.display = type;
+      this.$store.commit("setDisplay", type);
       if (type === "list") {
         this.$router.push({ name: "List" });
       } else {
@@ -77,7 +87,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["isLoading", "eventList"]),
+    ...mapState(["isLoading", "display", "eventList"]),
   },
 
   mounted() {

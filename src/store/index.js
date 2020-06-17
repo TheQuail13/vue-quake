@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoading: false,
+    display: 'list',
     eventList: [],
     eventDetails: null,
     shakeMap: null,
@@ -23,9 +24,13 @@ export default new Vuex.Store({
       "Magnitude Descending",
     ],
   },
+
   mutations: {
     setIsLoading(state, payload) {
       state.isLoading = payload
+    },
+    setDisplay(state, payload) {
+      state.display = payload
     },
     setEventList(state, payload) {
       state.eventList = payload
@@ -45,10 +50,11 @@ export default new Vuex.Store({
     setSelectedTimeFrame(state, payload) {
       state.selectedTimeFrame = payload;
     },
-    setSoryBy(state, payload) {
+    setSortBy(state, payload) {
       state.sortBy = payload;
     }
   },
+
   actions: {
     getQuakeDataFeed({ state, commit }) {
       commit('setIsLoading', true)
@@ -76,6 +82,7 @@ export default new Vuex.Store({
           if (response.data.properties.products.shakemap && response.data.properties.products.shakemap.length > 0) {
             dispatch('getShakeMap', response.data.properties.products.shakemap[0])
           } else {
+            commit('setShakeMap', null)
             commit('setIsLoading', false)
           }
         })

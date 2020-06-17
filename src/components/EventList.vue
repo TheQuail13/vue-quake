@@ -60,6 +60,7 @@ export default {
       }
     },
     routeTo(id) {
+      this.$store.commit("setDisplay", "detail");
       this.$router.push({ path: "details", query: { eventId: id } });
     },
   },
@@ -71,7 +72,7 @@ export default {
         return this.$store.state.sortBy;
       },
       set(value) {
-        this.$store.commit("setSoryBy", value);
+        this.$store.commit("setSortBy", value);
       },
     },
     sortedEventList() {
