@@ -31,6 +31,7 @@ import {
   QSpace,
   QCardActions,
   QChip,
+  QExpansionItem,
   ClosePopup
 } from 'quasar'
 
@@ -59,7 +60,8 @@ Vue.use(Quasar, {
     QDialog,
     QSpace,
     QCardActions,
-    QChip
+    QChip,
+    QExpansionItem
   },
   directives: {
     Ripple,

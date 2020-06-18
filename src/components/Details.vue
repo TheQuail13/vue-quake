@@ -1,17 +1,21 @@
 <template>
   <div class="q-ma-md" v-if="eventDetails">
-    <div class="text-h5">
-      <strong>{{ eventDetails.properties.title }}</strong>
-    </div>
-    <div>{{ formatDate(eventDetails.properties.time) }} UTC</div>
     <div>
-      {{ eventDetails.geometry.coordinates[1] }},
-      {{ eventDetails.geometry.coordinates[0] }}
+      <div class="text-h5">
+        <strong>{{ eventDetails.properties.title }}</strong>
+      </div>
+      <div>{{ formatDate(eventDetails.properties.time) }} UTC</div>
+      <!-- <div>
+        {{ eventDetails.geometry.coordinates[1] }},
+        {{ eventDetails.geometry.coordinates[0] }}
+      </div> -->
+      <!-- <div>{{ eventDetails.geometry.coordinates[2] }}</div> -->
+      <div>Status: {{ eventDetails.properties.status }}</div>
     </div>
-    <div>{{ eventDetails.geometry.coordinates[2] }}</div>
-    <div>Status: {{ eventDetails.properties.status }}</div>
 
-    <EventMap />
+    <EventMap class="q-my-md" />
+
+    <List />
   </div>
 </template>
 
@@ -19,10 +23,12 @@
 import { mapState } from "vuex";
 import { date } from "quasar";
 import EventMap from "./DetailsMap.vue";
+import List from "./DetailsExpansionList.vue";
 
 export default {
   components: {
     EventMap,
+    List,
   },
 
   methods: {
