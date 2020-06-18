@@ -12,12 +12,13 @@
           <q-card-section>Blah</q-card-section>
         </q-card>
       </q-expansion-item>
+
       <q-expansion-item
         group="detailList"
         expand-separator
         icon="message"
         label="Did You Feel It?"
-        caption="Tell Us!"
+        :caption="dyfiCount"
         header-class="text-blue"
       >
         <q-card>
@@ -30,7 +31,7 @@
         expand-separator
         icon="public"
         label="ShakeMap"
-        caption="IV"
+        :caption="romanNumeral(eventProducts.shakemap[0].properties.maxmmi)"
         header-class="text-blue"
       >
         <q-card>
@@ -82,7 +83,7 @@
       </q-expansion-item>
 
       <q-expansion-item
-        v-if="eventDetails.properties.products['moment-tensor']"
+        v-if="eventProducts['moment-tensor']"
         group="detailList"
         expand-separator
         icon="sports_baseball"
@@ -111,11 +112,28 @@
 
 <script>
 import { mapState } from "vuex";
+import converter from "../helpers/converterHelper";
+
 export default {
+  methods: {
+    romanNumeral(num) {
+      console.log(typeof num);
+      if (typeof num === "string") {
+        let float = parseFloat(num);
+        const roundedNum = Math.round(float);
+        debugger;
+        return converter.intToRomanNumeral(roundedNum);
+      }
+      return 0;
+    },
+  },
   computed: {
-    ...mapState(["eventDetails"]),
+    ...mapState({
+      eventProducts: (state) => state.eventDetails.properties.products,
+    }),
+    dyfiCount() {
+      return `${this.eventProducts.dyfi[0].properties.numResp} responses`;
+    },
   },
 };
 </script>
-
-<style lang="scss" scoped></style>
