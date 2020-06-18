@@ -14,6 +14,7 @@
       </q-expansion-item>
 
       <q-expansion-item
+        v-if="eventProducts.dyfi"
         group="detailList"
         expand-separator
         icon="message"
@@ -27,6 +28,7 @@
       </q-expansion-item>
 
       <q-expansion-item
+        v-if="eventProducts.shakemap"
         group="detailList"
         expand-separator
         icon="public"
@@ -121,7 +123,6 @@ export default {
       if (typeof num === "string") {
         let float = parseFloat(num);
         const roundedNum = Math.round(float);
-        debugger;
         return converter.intToRomanNumeral(roundedNum);
       }
       return 0;
