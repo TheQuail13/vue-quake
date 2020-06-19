@@ -157,10 +157,12 @@ export default {
     romanNumeral(num) {
       if (typeof num === "string") {
         let float = parseFloat(num);
-        const roundedNum = Math.round(float);
-        return converter.intToRomanNumeral(roundedNum);
+        if (!isNaN(float)) {
+          const roundedNum = Math.round(float);
+          return converter.intToRomanNumeral(roundedNum);
+        }
       }
-      return 0;
+      return null;
     },
     getRegionInformation() {
       this.$http
