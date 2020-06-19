@@ -25,6 +25,12 @@ export default new Vuex.Store({
     ],
   },
 
+  getters: {
+    eventId: state => { 
+      return state.eventDetails.id;
+    }
+  },
+
   mutations: {
     setIsLoading(state, payload) {
       state.isLoading = payload

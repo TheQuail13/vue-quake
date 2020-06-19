@@ -9,7 +9,9 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section class="text-center">
+            <div class="text-h6">Nearby Places</div>
+          </q-card-section>
         </q-card>
       </q-expansion-item>
 
@@ -23,7 +25,14 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section class="text-center">
+            <div class="text-h6">Community Intensity Map</div>
+            <q-img
+              v-if="eventProducts.dyfi[0].contents[`${eventDetails.id}_ciim.jpg`]"
+              :src="eventProducts.dyfi[0].contents[`${eventDetails.id}_ciim.jpg`].url"
+              spinner-color="white"
+            />
+          </q-card-section>
         </q-card>
       </q-expansion-item>
 
@@ -37,26 +46,47 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section class="text-center">
+            <div class="text-h6">Estimated Intensity Map</div>
+            <q-img
+              v-if="eventProducts.shakemap[0].contents['download/pin-thumbnail.png']"
+              :src="eventProducts.shakemap[0].contents['download/pin-thumbnail.png'].url"
+              spinner-color="white"
+            />
+          </q-card-section>
         </q-card>
       </q-expansion-item>
 
       <q-expansion-item
+        v-if="eventProducts.losspager"
         group="detailList"
         expand-separator
         icon="account_balance"
         label="PAGER"
-        caption="GREEN"
+        :caption="eventProducts.losspager[0].properties.alertlevel"
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>
-            <small>
+          <q-card-section class="q-pb-none">
+            <div class="text-caption text-center">
               The PAGER system provides fatality and economic loss impact estimates
               following significant earthquakes worldwide
-            </small>
+            </div>
           </q-card-section>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section class="text-center">
+            <div class="text-h6">Estimated Economic Losses</div>
+            <q-img
+              v-if="eventProducts.losspager[0].contents['alertecon_small.png']"
+              :src="eventProducts.losspager[0].contents['alertecon_small.png'].url"
+              spinner-color="white"
+            />
+            <div class="text-h6">Estimated Fatalities</div>
+            <q-img
+              v-if="eventProducts.losspager[0].contents['alertfatal_small.png']"
+              :src="eventProducts.losspager[0].contents['alertfatal_small.png'].url"
+              spinner-color="white"
+            />
+          </q-card-section>
         </q-card>
       </q-expansion-item>
 
@@ -117,9 +147,14 @@ import { mapState } from "vuex";
 import converter from "../helpers/converterHelper";
 
 export default {
+  data() {
+    return {
+      regionInfo: null,
+    };
+  },
+
   methods: {
     romanNumeral(num) {
-      console.log(typeof num);
       if (typeof num === "string") {
         let float = parseFloat(num);
         const roundedNum = Math.round(float);
@@ -127,14 +162,32 @@ export default {
       }
       return 0;
     },
+    getRegionInformation() {
+      this.$http
+        .get(
+          `https://earthquake.usgs.gov/ws/geoserve/regions.json?latitude=${this.eventDetails.geometry.coordinates[1]}&longitude=${this.eventDetails.geometry.coordinates[0]}`
+        )
+        .then((response) => {
+          this.regionInfo = response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
+
   computed: {
     ...mapState({
+      eventDetails: (state) => state.eventDetails,
       eventProducts: (state) => state.eventDetails.properties.products,
     }),
     dyfiCount() {
       return `${this.eventProducts.dyfi[0].properties.numResp} responses`;
     },
+  },
+
+  mounted() {
+    this.getRegionInformation();
   },
 };
 </script>
