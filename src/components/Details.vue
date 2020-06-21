@@ -12,7 +12,7 @@
       <!-- <div>{{ eventDetails.geometry.coordinates[2] }}</div> -->
     </div>
 
-    <EventMap class="q-my-md" />
+    <EventMap class="q-mt-sm q-mb-md" />
 
     <List />
   </div>
