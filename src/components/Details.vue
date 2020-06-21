@@ -10,30 +10,6 @@
         {{ eventDetails.geometry.coordinates[0] }}
       </div> -->
       <!-- <div>{{ eventDetails.geometry.coordinates[2] }}</div> -->
-      <div>
-        <q-chip
-          dense
-          :color="eventDetails.properties.status === 'reviewed' ? 'info' : 'warning'"
-          class="q-ma-none text-weight-medium"
-        >
-          {{ capitalizeWord(eventDetails.properties.status) }}
-        </q-chip>
-        <q-chip
-          dense
-          :color="pagerAlertStatus === 'green' ? 'positive' : pagerAlertStatus"
-          class="q-ma-none text-weight-medium float-right"
-          @click.prevent="tooltipVisible = true"
-        >
-          PAGER: {{ capitalizeWord(pagerAlertStatus) }}
-          <q-tooltip
-            v-model="tooltipVisible"
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            See PAGER tab for more info
-          </q-tooltip>
-        </q-chip>
-      </div>
     </div>
 
     <EventMap class="q-my-md" />

@@ -47,6 +47,7 @@ export default {
     return {
       mapOptions: {
         streetViewControl: false,
+        zoomControl: false,
       },
       toggleShapeLines: true,
     };
