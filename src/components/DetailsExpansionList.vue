@@ -22,7 +22,7 @@
         icon="message"
         label="Did You Feel It?"
         :caption="dyfiCount"
-        header-class="text-blue"
+        :header-class="`mmi-${romanNumeral(eventProducts.shakemap[0].properties.maxmmi)}`"
       >
         <q-card>
           <q-card-section class="text-center">
@@ -43,7 +43,7 @@
         icon="public"
         label="ShakeMap"
         :caption="romanNumeral(eventProducts.shakemap[0].properties.maxmmi)"
-        header-class="text-blue"
+        :header-class="`mmi-${romanNumeral(eventProducts.shakemap[0].properties.maxmmi)}`"
       >
         <q-card>
           <q-card-section class="text-center">
@@ -63,8 +63,8 @@
         expand-separator
         icon="account_balance"
         label="PAGER"
-        :caption="capitalizeWord(eventProducts.losspager[0].properties.alertlevel)"
-        :header-class="`mmi-${romanNumeral(eventProducts.shakemap[0].properties.maxmmi)}`"
+        :caption="capitalizeWord(pagerAlertStatus)"
+        :header-class="`pager-${pagerAlertStatus}`"
       >
         <q-card>
           <q-card-section class="q-pb-none">
@@ -146,7 +146,7 @@
 import { format } from "quasar";
 const { capitalize } = format;
 
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import converter from "../helpers/converterHelper";
 import { parseString } from "xml2js";
 
@@ -209,6 +209,7 @@ export default {
       eventDetails: (state) => state.eventDetails,
       eventProducts: (state) => state.eventDetails.properties.products,
     }),
+    ...mapGetters(["pagerAlertStatus"]),
     dyfiCount() {
       return `${this.eventProducts.dyfi[0].properties.numResp} responses`;
     },

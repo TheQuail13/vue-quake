@@ -29,3 +29,19 @@
 .mmi-VIII {
     color: #fa8a11 !important;
 }
+
+.pager-green {
+    color: #00b04f !important;
+}
+
+.pager-yellow {
+    color: #f2c037 !important;
+}
+
+.pager-orange {
+    color: #f90 !important;
+}
+
+.pager-red {
+    color: red !important;
+}
