@@ -26,8 +26,10 @@ export default new Vuex.Store({
   },
 
   getters: {
-    eventId: state => { 
-      return state.eventDetails.id;
+    pagerAlertStatus: state => { 
+      if (state.eventDetails.properties.products.losspager) {
+        return state.eventDetails.properties.products.losspager[0].properties.alertlevel;
+      }
     }
   },
 

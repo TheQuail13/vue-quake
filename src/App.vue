@@ -101,7 +101,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+// USGS Alert Colors
+@import "assets/css/usgs.css";
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s;

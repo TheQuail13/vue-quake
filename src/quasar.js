@@ -34,6 +34,7 @@ import {
   QExpansionItem,
   QPageScroller,
   QImg,
+  QTooltip,
   ClosePopup
 } from 'quasar'
 
@@ -65,7 +66,8 @@ Vue.use(Quasar, {
     QChip,
     QExpansionItem,
     QPageScroller,
-    QImg
+    QImg,
+    QTooltip
   },
   directives: {
     Ripple,

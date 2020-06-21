@@ -32,7 +32,7 @@
     <q-btn
       v-if="shakeMap"
       color="primary"
-      class="q-mt-sm full-width"
+      class="q-mt-xs full-width"
       label="Toggle Shape Lines"
       @click="toggleShapeLines = !toggleShapeLines"
     />

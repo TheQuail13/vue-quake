@@ -63,8 +63,8 @@
         expand-separator
         icon="account_balance"
         label="PAGER"
-        :caption="eventProducts.losspager[0].properties.alertlevel"
-        header-class="text-blue"
+        :caption="capitalizeWord(eventProducts.losspager[0].properties.alertlevel)"
+        :header-class="`mmi-${romanNumeral(eventProducts.shakemap[0].properties.maxmmi)}`"
       >
         <q-card>
           <q-card-section class="q-pb-none">
@@ -143,17 +143,29 @@
 </template>
 
 <script>
+import { format } from "quasar";
+const { capitalize } = format;
+
 import { mapState } from "vuex";
 import converter from "../helpers/converterHelper";
+import { parseString } from "xml2js";
 
 export default {
   data() {
     return {
       regionInfo: null,
+      originInfo: null,
     };
   },
 
   methods: {
+    capitalizeWord(word) {
+      if (typeof word === "string") {
+        return capitalize(word);
+      }
+
+      return word;
+    },
     romanNumeral(num) {
       if (typeof num === "string") {
         let float = parseFloat(num);
@@ -176,6 +188,20 @@ export default {
           console.log(err);
         });
     },
+    getOriginInfo() {
+      this.$http
+        .get(
+          `https://earthquake.usgs.gov/archive/product/origin/${this.eventDetails.id}/${this.eventProducts.origin[0].source}/${this.eventProducts.origin[0].updateTime}/quakeml.xml`
+        )
+        .then((response) => {
+          parseString(response.data, (err, result) => {
+            this.originInfo = result;
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 
   computed: {
@@ -190,6 +216,7 @@ export default {
 
   mounted() {
     this.getRegionInformation();
+    this.getOriginInfo();
   },
 };
 </script>

@@ -100,16 +100,16 @@ export default {
         this.currentMidx = idx;
       }
     },
-    getCircle(magnitude) {
-      return {
-        path: "SymbolPath.CIRCLE",
-        fillColor: "red",
-        fillOpacity: 0.2,
-        scale: Math.pow(2, magnitude) / 2,
-        strokeColor: "white",
-        strokeWeight: 0.5,
-      };
-    },
+    // getCircle(magnitude) {
+    //   return {
+    //     path: "SymbolPath.CIRCLE",
+    //     fillColor: "red",
+    //     fillOpacity: 0.2,
+    //     scale: Math.pow(2, magnitude) / 2,
+    //     strokeColor: "white",
+    //     strokeWeight: 0.5,
+    //   };
+    // },
   },
 
   computed: {
