@@ -160,6 +160,7 @@ export default {
     return {
       regionInfo: null,
       originInfo: null,
+      placeInfo: null,
     };
   },
 
@@ -188,6 +189,18 @@ export default {
         )
         .then((response) => {
           this.regionInfo = response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getPlaceInformation() {
+      this.$http
+        .get(
+          `https://earthquake.usgs.gov/ws/geoserve/places.json?latitude=${this.eventDetails.geometry.coordinates[1]}&longitude=${this.eventDetails.geometry.coordinates[0]}&type=event`
+        )
+        .then((response) => {
+          this.placeInfo = response.data;
         })
         .catch((err) => {
           console.log(err);
@@ -231,6 +244,7 @@ export default {
   },
 
   mounted() {
+    this.getPlaceInformation();
     this.getRegionInformation();
     this.getOriginInfo();
   },
