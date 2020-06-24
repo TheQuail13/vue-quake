@@ -22,7 +22,7 @@
         icon="message"
         label="Did You Feel It?"
         :caption="dyfiCount"
-        :header-class="`mmi-${romanNumeral(eventProducts.shakemap[0].properties.maxmmi)}`"
+        :header-class="`mmi-${romanNumeral(eventProducts.dyfi[0].properties.maxmmi)}`"
       >
         <q-card>
           <q-card-section class="text-center">
@@ -139,6 +139,11 @@
         </q-card>
       </q-expansion-item>
     </q-list>
+
+    <div class="q-mt-md">
+      <div class="text-h5 q-mb-sm">Tectonic Summary</div>
+      <span v-if="eventProducts['general-text']" v-html="tectonicSummary"></span>
+    </div>
   </div>
 </template>
 
@@ -212,6 +217,16 @@ export default {
     ...mapGetters(["pagerAlertStatus"]),
     dyfiCount() {
       return `${this.eventProducts.dyfi[0].properties.numResp} responses`;
+    },
+    tectonicSummary() {
+      if (this.eventProducts["general-text"]) {
+        const regEx = /<h2>(.*?)<\/h2>/s;
+        return this.eventProducts["general-text"][0].contents[""].bytes.replace(
+          regEx,
+          ""
+        );
+      }
+      return null;
     },
   },
 
