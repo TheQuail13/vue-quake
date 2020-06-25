@@ -2,6 +2,7 @@
   <div>
     <q-list bordered class="rounded-borders">
       <q-expansion-item
+        v-if="placeInfo"
         group="detailList"
         expand-separator
         icon="satellite"
@@ -9,8 +10,17 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section class="text-center">
-            <div class="text-h6">Nearby Places</div>
+          <q-card-section>
+            <div class="text-h6 text-center">Nearby Places</div>
+            <q-item v-for="city in nearbyCities" :key="city.name" class="q-px-none">
+              <q-item-section>
+                <q-item-label> {{ city.name }}</q-item-label>
+                <q-item-label caption
+                  >{{ city.distance }} km {{ city.direction }}</q-item-label
+                >
+              </q-item-section>
+              <span class="float-right"> Population: {{ city.population || "-" }} </span>
+            </q-item>
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -161,6 +171,7 @@ export default {
       regionInfo: null,
       originInfo: null,
       placeInfo: null,
+      nearbyCities: null,
     };
   },
 
@@ -194,18 +205,18 @@ export default {
           console.log(err);
         });
     },
-    getPlaceInformation() {
-      this.$http
-        .get(
-          `https://earthquake.usgs.gov/ws/geoserve/places.json?latitude=${this.eventDetails.geometry.coordinates[1]}&longitude=${this.eventDetails.geometry.coordinates[0]}&type=event`
-        )
-        .then((response) => {
-          this.placeInfo = response.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    // getPlaceInformation() {
+    //   this.$http
+    //     .get(
+    //       `https://earthquake.usgs.gov/ws/geoserve/places.json?latitude=${this.eventDetails.geometry.coordinates[1]}&longitude=${this.eventDetails.geometry.coordinates[0]}&type=event`
+    //     )
+    //     .then((response) => {
+    //       this.placeInfo = response.data;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
     getOriginInfo() {
       this.$http
         .get(
@@ -215,6 +226,16 @@ export default {
           parseString(response.data, (err, result) => {
             this.originInfo = result;
           });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getNearbyCities() {
+      this.$http
+        .get(this.eventProducts["nearby-cities"][0].contents["nearby-cities.json"].url)
+        .then((response) => {
+          this.nearbyCities = response.data;
         })
         .catch((err) => {
           console.log(err);
@@ -244,9 +265,10 @@ export default {
   },
 
   mounted() {
-    this.getPlaceInformation();
+    // this.getPlaceInformation();
     this.getRegionInformation();
     this.getOriginInfo();
+    this.getNearbyCities();
   },
 };
 </script>

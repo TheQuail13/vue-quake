@@ -4,15 +4,12 @@
       <div class="text-h5">
         <strong>{{ eventDetails.properties.title }}</strong>
       </div>
-      <div class="text-subtitle1">{{ formatDate(eventDetails.properties.time) }} UTC</div>
-      <!-- <div>
-        {{ eventDetails.geometry.coordinates[1] }},
-        {{ eventDetails.geometry.coordinates[0] }}
-      </div> -->
-      <!-- <div>{{ eventDetails.geometry.coordinates[2] }}</div> -->
+      <div class="text-subtitle1">
+        {{ formatDate(eventDetails.properties.time) }} (UTC)
+      </div>
     </div>
 
-    <EventMap class="q-mt-sm q-mb-md" />
+    <EventMap class="q-my-md" />
 
     <List />
   </div>
