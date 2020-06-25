@@ -2,7 +2,7 @@
   <div>
     <q-list bordered class="rounded-borders">
       <q-expansion-item
-        v-if="placeInfo"
+        v-if="nearbyCities"
         group="detailList"
         expand-separator
         icon="satellite"
@@ -15,9 +15,9 @@
             <q-item v-for="city in nearbyCities" :key="city.name" class="q-px-none">
               <q-item-section>
                 <q-item-label> {{ city.name }}</q-item-label>
-                <q-item-label caption
-                  >{{ city.distance }} km {{ city.direction }}</q-item-label
-                >
+                <q-item-label caption>
+                  {{ city.distance }} km {{ city.direction }}
+                </q-item-label>
               </q-item-section>
               <span class="float-right"> Population: {{ city.population || "-" }} </span>
             </q-item>
@@ -42,6 +42,8 @@
               :src="eventProducts.dyfi[0].contents[`${eventDetails.id}_ciim.jpg`].url"
               spinner-color="white"
             />
+            Contibute to citizen science! Please <a :href="dyfiUrl">share</a> your
+            experience.
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -59,8 +61,8 @@
           <q-card-section class="text-center">
             <div class="text-h6">Estimated Intensity Map</div>
             <q-img
-              v-if="eventProducts.shakemap[0].contents['download/pin-thumbnail.png']"
-              :src="eventProducts.shakemap[0].contents['download/pin-thumbnail.png'].url"
+              v-if="eventProducts.shakemap[0].contents['download/intensity.jpg']"
+              :src="eventProducts.shakemap[0].contents['download/intensity.jpg'].url"
               spinner-color="white"
             />
           </q-card-section>
@@ -145,25 +147,27 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section
+            >To view any current tsunami advisories for this and other events, please
+            visit: <a href="https://www.tsunami.gov"> https://www.tsunami.gov</a>.
+          </q-card-section>
         </q-card>
       </q-expansion-item>
     </q-list>
 
-    <div class="q-mt-md">
+    <div class="q-mt-md" v-if="eventProducts['general-text']">
       <div class="text-h5 q-mb-sm">Tectonic Summary</div>
-      <span v-if="eventProducts['general-text']" v-html="tectonicSummary"></span>
+      <span v-html="tectonicSummary"></span>
     </div>
   </div>
 </template>
 
 <script>
-import { format } from "quasar";
-const { capitalize } = format;
-
 import { mapState, mapGetters } from "vuex";
 import converter from "../helpers/converterHelper";
 import { parseString } from "xml2js";
+import { format } from "quasar";
+const { capitalize } = format;
 
 export default {
   data() {
@@ -205,18 +209,6 @@ export default {
           console.log(err);
         });
     },
-    // getPlaceInformation() {
-    //   this.$http
-    //     .get(
-    //       `https://earthquake.usgs.gov/ws/geoserve/places.json?latitude=${this.eventDetails.geometry.coordinates[1]}&longitude=${this.eventDetails.geometry.coordinates[0]}&type=event`
-    //     )
-    //     .then((response) => {
-    //       this.placeInfo = response.data;
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
     getOriginInfo() {
       this.$http
         .get(
@@ -251,6 +243,12 @@ export default {
     ...mapGetters(["pagerAlertStatus"]),
     dyfiCount() {
       return `${this.eventProducts.dyfi[0].properties.numResp} responses`;
+    },
+    dyfiUrl() {
+      if (this.eventDetails) {
+        return `https://earthquake.usgs.gov/earthquakes/eventpage/${this.eventDetails.id}/tellus`;
+      }
+      return "#";
     },
     tectonicSummary() {
       if (this.eventProducts["general-text"]) {

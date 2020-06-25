@@ -16,11 +16,9 @@
 </template>
 
 <script>
-import { format } from "quasar";
-const { capitalize } = format;
-
 import { mapState, mapGetters } from "vuex";
-import { date } from "quasar";
+import { date, format } from "quasar";
+const { capitalize } = format;
 import EventMap from "./DetailsMap.vue";
 import List from "./DetailsExpansionList.vue";
 
