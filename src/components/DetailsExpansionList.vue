@@ -42,8 +42,8 @@
               :src="eventProducts.dyfi[0].contents[`${eventDetails.id}_ciim.jpg`].url"
               spinner-color="white"
             />
-            Contibute to citizen science! Please <a :href="dyfiUrl">share</a> your
-            experience.
+            Contibute to citizen science - Please <a :href="dyfiUrl">share</a> your
+            experience!
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -140,6 +140,7 @@
       </q-expansion-item>
 
       <q-expansion-item
+        v-if="eventDetails.properties.tsunami === 1"
         group="detailList"
         expand-separator
         icon="waves"
@@ -158,6 +159,20 @@
     <div class="q-mt-md" v-if="eventProducts['general-text']">
       <div class="text-h5 q-mb-sm">Tectonic Summary</div>
       <span v-html="tectonicSummary"></span>
+    </div>
+
+    <div v-if="eventProducts['general-link']">
+      <div class="text-h5 q-mb-sm">Additional Information</div>
+      <ul>
+        <li v-for="link in eventProducts['general-link']" :key="link.indexid">
+          <a :href="link.properties.url">{{ link.properties.text }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div v-if="eventProducts['general-link']">
+      <div class="text-h5 q-mb-sm">Links</div>
+      <a :href="eventDetails.properties.url">Original USGS Page</a>
     </div>
   </div>
 </template>
