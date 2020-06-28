@@ -80,7 +80,9 @@ export default {
         lng: marker.geometry.coordinates[0],
       };
       this.infoContent = `
-      <div><strong>${marker.properties.place}</strong></div>
+      <div><a href='/details?eventId=${marker.id}'><strong>${
+        marker.properties.place
+      }</strong></a></div>
       <div class="q-mb-xs"><small>${this.formatDate(
         marker.properties.time
       )} UTC</small></div>
@@ -128,7 +130,5 @@ export default {
       };
     },
   },
-
-  mounted() {},
 };
 </script>
