@@ -110,7 +110,9 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section>
+            <div style="height: 25%; width: 25%; fill: orange;"></div>
+          </q-card-section>
         </q-card>
       </q-expansion-item>
 
@@ -160,7 +162,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import converter from "../helpers/converterHelper";
+import { intToRomanNumeral } from "@/helpers/converterHelper";
 import { parseString } from "xml2js";
 import { format } from "quasar";
 const { capitalize } = format;
@@ -188,7 +190,7 @@ export default {
         let float = parseFloat(num);
         if (!isNaN(float)) {
           const roundedNum = Math.round(float);
-          return converter.intToRomanNumeral(roundedNum);
+          return intToRomanNumeral(roundedNum);
         }
       }
       return null;
@@ -257,7 +259,6 @@ export default {
   },
 
   mounted() {
-    // this.getPlaceInformation();
     this.getRegionInformation();
     this.getOriginInfo();
     this.getNearbyCities();

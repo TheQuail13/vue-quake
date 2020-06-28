@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-import { date, format } from "quasar";
-const { capitalize } = format;
 import EventMap from "./DetailsMap.vue";
 import PropertyList from "./DetailsExpansionList.vue";
 import AdditionalInfo from "./DetailsAdditionalInfo.vue";
+import { mapState, mapGetters } from "vuex";
+import { date, format } from "quasar";
+const { capitalize } = format;
 
 export default {
   components: {

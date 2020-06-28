@@ -7,7 +7,7 @@ import axios from 'axios'
 import * as GmapVue from 'gmap-vue'
 
 Vue.prototype.$http = axios
-Vue.config.productionTip = false
+Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
 Vue.use(GmapVue, {
   load: {
