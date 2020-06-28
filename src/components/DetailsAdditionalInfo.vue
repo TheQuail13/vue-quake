@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="q-mt-md" v-if="eventProducts['general-text']">
+  <div class="q-mt-md">
+    <div v-if="eventProducts['general-text']">
       <div class="text-h5 q-mb-sm">Tectonic Summary</div>
       <span v-html="tectonicSummary"></span>
     </div>
@@ -14,7 +14,7 @@
       </ul>
     </div>
 
-    <div v-if="eventProducts['general-link']">
+    <div>
       <div class="text-h5 q-mb-sm">External Links</div>
       <a :href="eventDetails.properties.url">Original USGS Page</a>
     </div>

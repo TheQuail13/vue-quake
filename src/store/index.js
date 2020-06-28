@@ -15,7 +15,7 @@ export default new Vuex.Store({
     selectedMinimumMag: "4.5",
     selectedTimeFrame: "Day",
     magOptions: ["All", "2.5", "4.5", "Significant"],
-    timeFrames: ["Day", "Week", "Month"],
+    timeFrames: ["Day", "Week", "Month", 'Custom'],
     sortBy: "Date Descending",
     sortOptions: [
       "Date Ascending",

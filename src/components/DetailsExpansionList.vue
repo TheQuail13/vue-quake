@@ -103,6 +103,7 @@
       </q-expansion-item>
 
       <q-expansion-item
+        v-if="eventProducts['ground-failure']"
         group="detailList"
         expand-separator
         icon="report_problem"
