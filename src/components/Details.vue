@@ -11,7 +11,9 @@
 
     <EventMap class="q-my-md" />
 
-    <List />
+    <PropertyList />
+
+    <AdditionalInfo />
   </div>
 </template>
 
@@ -20,12 +22,14 @@ import { mapState, mapGetters } from "vuex";
 import { date, format } from "quasar";
 const { capitalize } = format;
 import EventMap from "./DetailsMap.vue";
-import List from "./DetailsExpansionList.vue";
+import PropertyList from "./DetailsExpansionList.vue";
+import AdditionalInfo from "./DetailsAdditionalInfo.vue";
 
 export default {
   components: {
     EventMap,
-    List,
+    PropertyList,
+    AdditionalInfo,
   },
 
   data() {
@@ -48,7 +52,10 @@ export default {
   },
 
   computed: {
-    ...mapState(["eventDetails", "error"]),
+    ...mapState({
+      eventDetails: (state) => state.eventDetails,
+      error: (state) => state.error,
+    }),
     ...mapGetters(["pagerAlertStatus"]),
   },
 
