@@ -6,8 +6,8 @@ import './quasar'
 import axios from 'axios'
 import * as GmapVue from 'gmap-vue'
 
-Vue.prototype.$http = axios
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
+Vue.prototype.$http = axios
 
 Vue.use(GmapVue, {
   load: {

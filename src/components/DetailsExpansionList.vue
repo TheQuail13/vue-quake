@@ -107,11 +107,54 @@
         expand-separator
         icon="report_problem"
         label="Ground Failure"
-        header-class="text-blue"
+        :header-class="`text-${groundFailureMetaAlertLevel}`"
       >
         <q-card>
+          <q-card-section class="q-pb-none">
+            <div class="text-h6 text-center  q-pb-sm">Landslide Estimate</div>
+            <div class="row">
+              <div
+                :style="
+                  `height: 25%; width: 25%; fill: ${eventProducts['ground-failure'][0].properties['landslide-alert']};`
+                "
+                class="col-4"
+              >
+                <Landslide />
+              </div>
+              <div class="col-8 q-ml-sm self-center">
+                <div
+                  class="text-body1"
+                  v-html="groundFailureFullText('landslide', 'hazard')"
+                ></div>
+                <div
+                  class="text-body1"
+                  v-html="groundFailureFullText('landslide', 'population')"
+                ></div>
+              </div>
+            </div>
+          </q-card-section>
           <q-card-section>
-            <div style="height: 25%; width: 25%; fill: orange;"></div>
+            <div class="text-h6 text-center q-py-sm">Liquefaction Estimate</div>
+            <div class="row">
+              <div
+                :style="
+                  `height: 25%; width: 25%; fill: ${eventProducts['ground-failure'][0].properties['liquefaction-alert']};`
+                "
+                class="col-4"
+              >
+                <Liquefaction />
+              </div>
+              <div class="col-8 q-ml-sm self-center">
+                <div
+                  class="text-body1"
+                  v-html="groundFailureFullText('liquefaction', 'hazard')"
+                ></div>
+                <div
+                  class="text-body1"
+                  v-html="groundFailureFullText('liquefaction', 'population')"
+                ></div>
+              </div>
+            </div>
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -161,6 +204,9 @@
 </template>
 
 <script>
+import Landslide from "./Svg/LandslideSvg.vue";
+import Liquefaction from "./Svg/LiquefactionSvg.vue";
+
 import { mapState, mapGetters } from "vuex";
 import { intToRomanNumeral } from "@/helpers/converterHelper";
 import { parseString } from "xml2js";
@@ -168,6 +214,11 @@ import { format } from "quasar";
 const { capitalize } = format;
 
 export default {
+  components: {
+    Landslide,
+    Liquefaction,
+  },
+
   data() {
     return {
       regionInfo: null,
@@ -195,6 +246,40 @@ export default {
       }
       return null;
     },
+    groundFailureFullText(type = "landslide", subtype = "population") {
+      if (type && subtype) {
+        const groundFailureRef = this.eventProducts["ground-failure"][0].properties;
+
+        const number = groundFailureRef[`${type}-${subtype}-alert-value`];
+        const severity = this.groundFailureText(
+          groundFailureRef[`${type}-${subtype}-alert-color`]
+        );
+        const subtypeDesc =
+          subtype === "population"
+            ? `population exposed <small>(${number})</small>`
+            : `area affected <small>(${number} km${"2".sup()})</small>`;
+        return `${severity} ${subtypeDesc}`;
+      }
+
+      return "No analysis currently available";
+    },
+    groundFailureText(color) {
+      if (color) {
+        switch (color) {
+          case "red":
+            return "Extensive";
+          case "yellow":
+            return "Limited";
+          case "orange":
+            return "Significant";
+          default:
+            break;
+        }
+      }
+
+      return "Little or no";
+    },
+
     getRegionInformation() {
       this.$http
         .get(
@@ -255,6 +340,22 @@ export default {
         return `https://earthquake.usgs.gov/earthquakes/eventpage/${this.eventDetails.id}/tellus`;
       }
       return "#";
+    },
+    groundFailureMetaAlertLevel() {
+      if (this.eventProducts["ground-failure"]) {
+        const groundFailureRef = this.eventProducts["ground-failure"][0].properties;
+        const combinedAlerts = `${groundFailureRef["landslide-alert"]}${groundFailureRef["liquefaction-alert"]}`;
+
+        if (combinedAlerts.toLocaleLowerCase().indexOf("red") > -1) {
+          return "red";
+        } else if (combinedAlerts.toLocaleLowerCase().indexOf("orange") > -1) {
+          return "orange";
+        } else if (combinedAlerts.toLocaleLowerCase().indexOf("yellow") > -1) {
+          return "yellow";
+        }
+      }
+
+      return "green";
     },
   },
 
