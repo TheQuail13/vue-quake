@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import EventList from '../components/EventList.vue'
+import EventList from '../components/EventsList.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +13,7 @@ Vue.use(VueRouter)
   {
     path: '/map',
     name: 'Map',
-    component: () => import(/* webpackChunkName: "map" */ '../components/QuakeMap.vue')
+    component: () => import(/* webpackChunkName: "map" */ '../components/EventsMap.vue')
     },
     {
     path: '/details',
