@@ -118,7 +118,7 @@ export default {
       if (window) {
         return {
           width: "100%",
-          height: `${window.innerHeight - 50}px`,
+          "min-height": "inherit",
         };
       }
 

@@ -7,7 +7,7 @@
         lat: eventDetails.geometry.coordinates[1],
         lng: eventDetails.geometry.coordinates[0],
       }"
-      :zoom="8"
+      :zoom="7"
       :options="mapOptions"
     >
       <gmap-marker

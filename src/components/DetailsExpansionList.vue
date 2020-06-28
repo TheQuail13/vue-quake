@@ -147,8 +147,8 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section
-            >To view any current tsunami advisories for this and other events, please
+          <q-card-section>
+            To view any current tsunami advisories for this and other events, please
             visit: <a href="https://www.tsunami.gov"> https://www.tsunami.gov</a>.
           </q-card-section>
         </q-card>
@@ -210,28 +210,32 @@ export default {
         });
     },
     getOriginInfo() {
-      this.$http
-        .get(
-          `https://earthquake.usgs.gov/archive/product/origin/${this.eventDetails.id}/${this.eventProducts.origin[0].source}/${this.eventProducts.origin[0].updateTime}/quakeml.xml`
-        )
-        .then((response) => {
-          parseString(response.data, (err, result) => {
-            this.originInfo = result;
+      if (this.eventProducts.origin) {
+        this.$http
+          .get(
+            `https://earthquake.usgs.gov/archive/product/origin/${this.eventDetails.id}/${this.eventProducts.origin[0].source}/${this.eventProducts.origin[0].updateTime}/quakeml.xml`
+          )
+          .then((response) => {
+            parseString(response.data, (err, result) => {
+              this.originInfo = result;
+            });
+          })
+          .catch((err) => {
+            console.log(err);
           });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      }
     },
     getNearbyCities() {
-      this.$http
-        .get(this.eventProducts["nearby-cities"][0].contents["nearby-cities.json"].url)
-        .then((response) => {
-          this.nearbyCities = response.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (this.eventProducts["nearby-cities"]) {
+        this.$http
+          .get(this.eventProducts["nearby-cities"][0].contents["nearby-cities.json"].url)
+          .then((response) => {
+            this.nearbyCities = response.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   },
 
@@ -242,7 +246,11 @@ export default {
     }),
     ...mapGetters(["pagerAlertStatus"]),
     dyfiCount() {
-      return `${this.eventProducts.dyfi[0].properties.numResp} responses`;
+      let responseCount = 0;
+      if (this.eventProducts.dyfi) {
+        responseCount = this.eventProducts.dyfi[0].properties.numResp;
+      }
+      return `${responseCount} responses`;
     },
     dyfiUrl() {
       if (this.eventDetails) {
