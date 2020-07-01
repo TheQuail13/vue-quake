@@ -75,7 +75,7 @@
         expand-separator
         icon="account_balance"
         label="PAGER"
-        :caption="capitalizeWord(pagerAlertStatus)"
+        :caption="$capitalize(pagerAlertStatus)"
         :header-class="`pager-${pagerAlertStatus}`"
       >
         <q-card>
@@ -92,7 +92,7 @@
               :src="eventProducts.losspager[0].contents['alertecon_small.png'].url"
               spinner-color="white"
             />
-            <div class="text-h6">Estimated Fatalities</div>
+            <div class="text-h6 q-pt-md">Estimated Fatalities</div>
             <q-img
               v-if="eventProducts.losspager[0].contents['alertfatal_small.png']"
               :src="eventProducts.losspager[0].contents['alertfatal_small.png'].url"
@@ -112,11 +112,11 @@
       >
         <q-card>
           <q-card-section class="q-pb-none">
-            <div class="text-h6 text-center  q-pb-sm">Landslide Estimate</div>
+            <div class="text-h6 text-center q-pb-xs">Landslide Estimate</div>
             <div class="row">
               <div
                 :style="
-                  `height: 25%; width: 25%; fill: ${eventProducts['ground-failure'][0].properties['landslide-alert']};`
+                  `height: 20%; width: 20%; fill: ${eventProducts['ground-failure'][0].properties['landslide-alert']};`
                 "
                 class="col-4"
               >
@@ -124,22 +124,22 @@
               </div>
               <div class="col-8 q-ml-sm self-center">
                 <div
-                  class="text-body1"
+                  class="text-body2"
                   v-html="groundFailureFullText('landslide', 'hazard')"
                 ></div>
                 <div
-                  class="text-body1"
+                  class="text-body2"
                   v-html="groundFailureFullText('landslide', 'population')"
                 ></div>
               </div>
             </div>
           </q-card-section>
           <q-card-section>
-            <div class="text-h6 text-center q-py-sm">Liquefaction Estimate</div>
+            <div class="text-h6 text-center q-pb-xs">Liquefaction Estimate</div>
             <div class="row">
               <div
                 :style="
-                  `height: 25%; width: 25%; fill: ${eventProducts['ground-failure'][0].properties['liquefaction-alert']};`
+                  `height: 20%; width: 20%; fill: ${eventProducts['ground-failure'][0].properties['liquefaction-alert']};`
                 "
                 class="col-4"
               >
@@ -147,11 +147,11 @@
               </div>
               <div class="col-8 q-ml-sm self-center">
                 <div
-                  class="text-body1"
+                  class="text-body2"
                   v-html="groundFailureFullText('liquefaction', 'hazard')"
                 ></div>
                 <div
-                  class="text-body1"
+                  class="text-body2"
                   v-html="groundFailureFullText('liquefaction', 'population')"
                 ></div>
               </div>
@@ -161,6 +161,7 @@
       </q-expansion-item>
 
       <q-expansion-item
+        v-if="this.originInfo"
         group="detailList"
         expand-separator
         icon="my_location"
@@ -168,11 +169,45 @@
         header-class="text-blue"
       >
         <q-card>
-          <q-card-section>Blah</q-card-section>
+          <q-card-section>
+            <q-list dense>
+              <OriginItem :label="'Review Status'"
+                >{{ $capitalize(eventDetails.properties.status) }}
+              </OriginItem>
+              <OriginItem :label="'Location'"
+                >{{
+                  formatCoordinates(
+                    originInfo.origin[0].latitude[0].value[0],
+                    originInfo.origin[0].longitude[0].value[0]
+                  )
+                }}
+              </OriginItem>
+              <OriginItem :label="'Magnitude'">
+                {{ originInfo.magnitude[0].mag[0].value[0] }}
+                {{ originInfo.magnitude[0].type[0] }}
+              </OriginItem>
+              <OriginItem :label="'Depth'">
+                {{ parseFloat(originInfo.origin[0].depth[0].value[0]) / 1000 }}
+                km
+              </OriginItem>
+              <OriginItem :label="'Time'">
+                {{ $formatDate(originInfo.origin[0].time[0].value[0]) }} UTC
+              </OriginItem>
+              <OriginItem :label="'Number of Stations'">
+                {{ originInfo.magnitude[0].stationCount[0] }}
+              </OriginItem>
+              <OriginItem :label="'Number of Phases'">
+                {{ originInfo.origin[0].quality[0].usedPhaseCount[0] }}
+              </OriginItem>
+              <OriginItem :label="'Minimum Distance'">
+                {{ originInfo.origin[0].quality[0].minimumDistance[0] }}
+              </OriginItem>
+            </q-list>
+          </q-card-section>
         </q-card>
       </q-expansion-item>
 
-      <q-expansion-item
+      <!-- <q-expansion-item
         v-if="eventProducts['moment-tensor']"
         group="detailList"
         expand-separator
@@ -183,7 +218,7 @@
         <q-card>
           <q-card-section>Blah</q-card-section>
         </q-card>
-      </q-expansion-item>
+      </q-expansion-item> -->
 
       <q-expansion-item
         v-if="eventDetails.properties.tsunami === 1"
@@ -207,17 +242,17 @@
 <script>
 import Landslide from "./Svg/LandslideSvg.vue";
 import Liquefaction from "./Svg/LiquefactionSvg.vue";
+import OriginItem from "./OriginInfoItem.vue";
 
 import { mapState, mapGetters } from "vuex";
 import { intToRomanNumeral } from "@/helpers/converterHelper";
 import { parseString } from "xml2js";
-import { format } from "quasar";
-const { capitalize } = format;
 
 export default {
   components: {
     Landslide,
     Liquefaction,
+    OriginItem,
   },
 
   data() {
@@ -230,13 +265,6 @@ export default {
   },
 
   methods: {
-    capitalizeWord(word) {
-      if (typeof word === "string") {
-        return capitalize(word);
-      }
-
-      return word;
-    },
     romanNumeral(num) {
       if (typeof num === "string") {
         let float = parseFloat(num);
@@ -246,6 +274,15 @@ export default {
         }
       }
       return null;
+    },
+    formatCoordinates(lat, lng) {
+      const degree = String.fromCharCode(176);
+      let latDir = lat > 0 ? "N" : "S";
+      let lngDir = lng > 0 ? "E" : "W";
+      let finalLat = `${Math.abs(lat)}${degree}${latDir}`;
+      let finalLng = `${Math.abs(lng)}${degree}${lngDir}`;
+
+      return `${finalLat} ${finalLng}`;
     },
     groundFailureFullText(type = "landslide", subtype = "population") {
       if (type && subtype) {
@@ -280,7 +317,6 @@ export default {
 
       return "Little or no";
     },
-
     getRegionInformation() {
       this.$http
         .get(
@@ -301,7 +337,7 @@ export default {
           )
           .then((response) => {
             parseString(response.data, (err, result) => {
-              this.originInfo = result;
+              this.originInfo = result["q:quakeml"].eventParameters[0].event[0];
             });
           })
           .catch((err) => {
@@ -364,6 +400,7 @@ export default {
     this.getRegionInformation();
     this.getOriginInfo();
     this.getNearbyCities();
+    this.formatCoordinates(1, 27);
   },
 };
 </script>

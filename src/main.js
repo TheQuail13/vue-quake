@@ -5,9 +5,13 @@ import router from './router'
 import './quasar'
 import axios from 'axios'
 import * as GmapVue from 'gmap-vue'
+import { formatDate, capitalizeWord } from "@/helpers/formatHelper.js";
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
+
 Vue.prototype.$http = axios
+Vue.prototype.$formatDate = formatDate
+Vue.prototype.$capitalize = capitalizeWord
 
 Vue.use(GmapVue, {
   load: {

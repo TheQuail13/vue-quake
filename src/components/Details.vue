@@ -5,7 +5,7 @@
         <strong>{{ eventDetails.properties.title }}</strong>
       </div>
       <div class="text-subtitle1">
-        {{ formatDate(eventDetails.properties.time) }} (UTC)
+        {{ $formatDate(eventDetails.properties.time) }} (UTC)
       </div>
     </div>
 
@@ -22,8 +22,6 @@ import EventMap from "./DetailsMap.vue";
 import PropertyList from "./DetailsExpansionList.vue";
 import AdditionalInfo from "./DetailsAdditionalInfo.vue";
 import { mapState, mapGetters } from "vuex";
-import { date, format } from "quasar";
-const { capitalize } = format;
 
 export default {
   components: {
@@ -36,19 +34,6 @@ export default {
     return {
       tooltipVisible: false,
     };
-  },
-
-  methods: {
-    formatDate(milliseconds) {
-      return date.formatDate(milliseconds, "MM-DD-YYYY HH:mm:ss");
-    },
-    capitalizeWord(word) {
-      if (typeof word === "string") {
-        return capitalize(word);
-      }
-
-      return word;
-    },
   },
 
   computed: {
