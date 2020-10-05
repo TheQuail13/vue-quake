@@ -2,6 +2,53 @@
   <div>
     <q-list bordered class="rounded-borders">
       <q-expansion-item
+        v-if="this.originInfo"
+        group="detailList"
+        expand-separator
+        icon="my_location"
+        label="Origin"
+        header-class="text-blue"
+      >
+        <q-card>
+          <q-card-section>
+            <q-list dense>
+              <OriginItem :label="'Status'"
+                >{{ $capitalize(eventDetails.properties.status) }}
+              </OriginItem>
+              <OriginItem :label="'Time'">
+                {{ $formatDate(originInfo.origin[0].time[0].value[0]) }} UTC
+              </OriginItem>
+              <OriginItem :label="'Location'"
+                >{{
+                  formatCoordinates(
+                    originInfo.origin[0].latitude[0].value[0],
+                    originInfo.origin[0].longitude[0].value[0]
+                  )
+                }}
+              </OriginItem>
+              <OriginItem :label="'Magnitude'">
+                {{ originInfo.magnitude[0].mag[0].value[0] }}
+                {{ originInfo.magnitude[0].type[0] }}
+              </OriginItem>
+              <OriginItem :label="'Depth'">
+                {{ parseFloat(originInfo.origin[0].depth[0].value[0]) / 1000 }}
+                km
+              </OriginItem>
+              <OriginItem :label="'Number of Stations'">
+                {{ originInfo.magnitude[0].stationCount[0] }}
+              </OriginItem>
+              <OriginItem :label="'Number of Phases'">
+                {{ originInfo.origin[0].quality[0].usedPhaseCount[0] }}
+              </OriginItem>
+              <!-- <OriginItem :label="'Minimum Distance'">
+                {{ originInfo.origin[0].quality[0].minimumDistance[0] }}
+              </OriginItem> -->
+            </q-list>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
+
+      <q-expansion-item
         v-if="nearbyCities"
         group="detailList"
         expand-separator
@@ -160,53 +207,6 @@
         </q-card>
       </q-expansion-item>
 
-      <q-expansion-item
-        v-if="this.originInfo"
-        group="detailList"
-        expand-separator
-        icon="my_location"
-        label="Origin"
-        header-class="text-blue"
-      >
-        <q-card>
-          <q-card-section>
-            <q-list dense>
-              <OriginItem :label="'Review Status'"
-                >{{ $capitalize(eventDetails.properties.status) }}
-              </OriginItem>
-              <OriginItem :label="'Location'"
-                >{{
-                  formatCoordinates(
-                    originInfo.origin[0].latitude[0].value[0],
-                    originInfo.origin[0].longitude[0].value[0]
-                  )
-                }}
-              </OriginItem>
-              <OriginItem :label="'Magnitude'">
-                {{ originInfo.magnitude[0].mag[0].value[0] }}
-                {{ originInfo.magnitude[0].type[0] }}
-              </OriginItem>
-              <OriginItem :label="'Depth'">
-                {{ parseFloat(originInfo.origin[0].depth[0].value[0]) / 1000 }}
-                km
-              </OriginItem>
-              <OriginItem :label="'Time'">
-                {{ $formatDate(originInfo.origin[0].time[0].value[0]) }} UTC
-              </OriginItem>
-              <OriginItem :label="'Number of Stations'">
-                {{ originInfo.magnitude[0].stationCount[0] }}
-              </OriginItem>
-              <OriginItem :label="'Number of Phases'">
-                {{ originInfo.origin[0].quality[0].usedPhaseCount[0] }}
-              </OriginItem>
-              <OriginItem :label="'Minimum Distance'">
-                {{ originInfo.origin[0].quality[0].minimumDistance[0] }}
-              </OriginItem>
-            </q-list>
-          </q-card-section>
-        </q-card>
-      </q-expansion-item>
-
       <!-- <q-expansion-item
         v-if="eventProducts['moment-tensor']"
         group="detailList"
@@ -273,7 +273,7 @@ export default {
           return intToRomanNumeral(roundedNum);
         }
       }
-      return null;
+      return num;
     },
     formatCoordinates(lat, lng) {
       const degree = String.fromCharCode(176);
